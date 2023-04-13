@@ -65,4 +65,12 @@ public class UI {
 			throw new InputMismatchException("Erro ao ler a posição da peça: valores valido de a1 a h8");
 		}
 	}
+	
+	// limpar a tela
+	public static void limpaTela() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+	}
+	
+	
 }
