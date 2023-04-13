@@ -74,4 +74,11 @@ public class ChessMatch {
 			board.placePiece(p, destino);
 			return peçaCapturada;
 		}
+		
+		public boolean [][] possiveisMovimentos (ChessPosition posiçãoDeOrigem) {
+			Position position = posiçãoDeOrigem.toPosition() ;
+			validarPosiçãoDeOrigem(position);
+			return board.piece(position).possiveisMovimentos();
+			
+		}
 }
