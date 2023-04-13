@@ -45,15 +45,24 @@ public class ChessMatch {
 			Position origem = posiçãoDeOrigem.toPosition();
 			Position destino = posiçãoDeDestino.toPosition();
 			validarPosiçãoDeOrigem(origem);
+			validarPosiçãoDeDestino(origem,destino);
 			Piece peçaCapturada = movimento(origem,destino);
 			return (ChessPiece) peçaCapturada;
+		}
+		
+		private void validarPosiçãoDeDestino (Position origem,Position destino) {
+			
+			if (!board.piece(origem).possivelMovimento(destino)) {
+				throw new chessException("A peça não pode ser movida para o destino");
+			}
+			
 		}
 		
 		private void validarPosiçãoDeOrigem(Position position) {
 			if (!board.thereIsAPiece(position)) {
 				throw new chessException("Não tem peça na posição de origem");
 			}
-			if (board.piece(position).temAlgumPossivelMovimento()) {
+			if (!board.piece(position).temAlgumPossivelMovimento()) {
 				throw new chessException("Não tem movimento possivel para peça");
 				
 			}
