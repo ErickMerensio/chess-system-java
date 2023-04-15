@@ -18,7 +18,7 @@ public class Program {
 		ChessMatch chessMatch = new ChessMatch();
 		List<ChessPiece> capturas = new ArrayList<>();	
 			
-		while (true) {
+		while (!chessMatch.getCheckMate()) {
 		try {
 			UI.limpaTela();
 			UI.imprimirPartida(chessMatch,capturas);
@@ -49,6 +49,8 @@ public class Program {
 			}
 		
 	}
+		UI.limpaTela();
+		UI.imprimirPartida(chessMatch, capturas);
 
 }
 }

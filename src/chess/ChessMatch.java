@@ -16,6 +16,7 @@ public class ChessMatch {
 		private Color jogadorAtual;
 		private Board board;
 		private boolean check;
+		private boolean checkMate;
 		
 		private List<Piece> peçasNoTabuleiro = new ArrayList<>();
 		private List<Piece> peçascapturadas = new ArrayList<>();
@@ -39,6 +40,11 @@ public class ChessMatch {
 		public boolean getCheck () {
 			return check;
 		}
+		
+		public boolean getCheckMate () {
+			return checkMate;
+		}
+		
 		
 		public ChessPiece[][] getPieces() {
 			ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
@@ -77,7 +83,11 @@ public class ChessMatch {
 				throw new chessException("Você não pode se colocar em Check");
 			}
 			check = (testeCheck(oponente(jogadorAtual))) ? true : false ;
+			if (testeCheckMate(oponente(jogadorAtual))) {
+				checkMate = true;
+			} else {
 			proximoTurno();
+			}
 			return (ChessPiece) peçaCapturada;
 		}
 		
@@ -159,5 +169,30 @@ public class ChessMatch {
 				}
 			}
 			return false;
+		}
+		
+		private boolean testeCheckMate(Color cor) {
+			if (!testeCheck(cor)) {
+				return false;
+			}
+			List<Piece> list = peçasNoTabuleiro.stream().filter(x -> ((ChessPiece)x).getColor() == cor).collect(Collectors.toList());
+			for (Piece p : list ) {
+				boolean[][] mat = p.possiveisMovimentos();
+				for (int i=0; i<board.getRows();i++) {
+					for (int j=0;j<board.getColumns();j++) {
+						if(mat[i][j]) {
+							Position origem = ((ChessPiece)p).getPosiçãoDoXadrez().toPosition();
+							Position destino = new Position(i,j);
+							Piece peçaCapturada = movimento(origem,destino);
+							boolean testeCheck = testeCheck(cor);
+							desfazerMovimento(origem, destino, peçaCapturada);
+							if(!testeCheck) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+			return true;
 		}
 }
