@@ -10,6 +10,7 @@ import boardgame.Position;
 import chess.pieces.Bispo;
 import chess.pieces.Cavalo;
 import chess.pieces.Peao;
+import chess.pieces.Rainha;
 import chess.pieces.Rei;
 import chess.pieces.Torre;
 
@@ -61,6 +62,7 @@ public class ChessMatch {
 
 		private void InitialSetup() {
 	        	placeNewPiece('e', 1, new Rei(board, Color.White));
+	        	placeNewPiece('d', 1, new Rainha(board, Color.White));
 			  	placeNewPiece('c', 1, new Bispo(board, Color.White));
 			  	placeNewPiece('f', 1, new Bispo(board, Color.White));
 			  	placeNewPiece('a', 1, new Torre(board, Color.White));
@@ -77,6 +79,7 @@ public class ChessMatch {
 		        placeNewPiece('h', 2, new Peao(board, Color.White));
 			//-------------------------------------------------------------------
 		        placeNewPiece('e', 8, new Rei(board, Color.Black));
+		        placeNewPiece('d', 8, new Rainha(board, Color.Black));
 		        placeNewPiece('c', 8, new Bispo(board, Color.Black));
 		        placeNewPiece('f', 8, new Bispo(board, Color.Black));
 		        placeNewPiece('a', 8, new Torre(board, Color.Black));
