@@ -1,7 +1,10 @@
 package application;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import chess.ChessMatch;
 import chess.ChessPiece;
@@ -42,8 +45,10 @@ public class UI {
 	}
 	
 	
-	public static void imprimirPartida(ChessMatch partidaDeXadrez) {
+	public static void imprimirPartida(ChessMatch partidaDeXadrez,List<ChessPiece> capturas) {
 		printBoard(partidaDeXadrez.getPieces());
+		System.out.println();
+		imprimirPeçaCapturada(capturas);
 		System.out.println();
 		System.out.println("Turno: " + partidaDeXadrez.getTurno());
 		System.out.println("Esperando jogador: " + partidaDeXadrez.getJogadorAtual());
@@ -94,6 +99,21 @@ public class UI {
 	public static void limpaTela() {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
+	}
+	
+	private static void imprimirPeçaCapturada(List<ChessPiece> capturada) {
+		List<ChessPiece> branca = capturada.stream().filter(x -> x.getColor() == Color.White).collect(Collectors.toList());
+		List<ChessPiece> preta = capturada.stream().filter(x -> x.getColor() == Color.Black).collect(Collectors.toList());
+		
+		System.out.println("Peças capturadas: ");
+		System.out.print("Brancas:");
+		System.out.println(ANSI_WHITE);
+		System.out.println(Arrays.toString(branca.toArray()));
+		System.out.println(ANSI_RESET);
+		System.out.print("Pretas:");
+		System.out.println(ANSI_RED);
+		System.out.println(Arrays.toString(preta.toArray()));
+		System.out.println(ANSI_RESET);
 	}
 	
 }
