@@ -53,7 +53,7 @@ public class Bispo extends ChessPiece{
 			mat[p.getRow()][p.getColumn()] = true;
 		}
 		
-		//torre movendo para sudeste
+		//Bispo movendo para sudeste
 		p.setValues(position.getRow() +1, position.getColumn() +1 );
 		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getRow()][p.getColumn()] = true;
