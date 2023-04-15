@@ -18,7 +18,7 @@ public class Program {
 		while (true) {
 		try {
 			UI.limpaTela();
-			UI.printBoard(chessMatch.getPieces());
+			UI.imprimirPartida(chessMatch);
 			System.out.println();
 			System.out.println("Origem: ");
 			ChessPosition origem = UI.lerAPosiçãoDaPeça(sc);

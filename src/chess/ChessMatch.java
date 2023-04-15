@@ -8,12 +8,24 @@ import chess.pieces.Rook;
 
 public class ChessMatch {
 	
-	
+		private int turno;
+		private Color jogadorAtual;
 		private Board board;
+		
 		
 		public ChessMatch() {
 			board = new Board(8,8);
+			turno = 1;
+			jogadorAtual = Color.White;
 			InitialSetup();
+		}
+		
+		public int getTurno() {
+			return turno;
+		}
+		
+		public Color getJogadorAtual() {
+			return jogadorAtual;
 		}
 		
 		public ChessPiece[][] getPieces() {
@@ -47,6 +59,7 @@ public class ChessMatch {
 			validarPosiçãoDeOrigem(origem);
 			validarPosiçãoDeDestino(origem,destino);
 			Piece peçaCapturada = movimento(origem,destino);
+			proximoTurno();
 			return (ChessPiece) peçaCapturada;
 		}
 		
@@ -61,6 +74,9 @@ public class ChessMatch {
 		private void validarPosiçãoDeOrigem(Position position) {
 			if (!board.thereIsAPiece(position)) {
 				throw new chessException("Não tem peça na posição de origem");
+			}
+			if (jogadorAtual != ((ChessPiece)board.piece(position)).getColor()) {
+				throw new chessException("A peça escolhida não é sua");
 			}
 			if (!board.piece(position).temAlgumPossivelMovimento()) {
 				throw new chessException("Não tem movimento possivel para peça");
@@ -80,5 +96,10 @@ public class ChessMatch {
 			validarPosiçãoDeOrigem(position);
 			return board.piece(position).possiveisMovimentos();
 			
+		}
+		
+		private void proximoTurno () {
+			turno++;
+			jogadorAtual = (jogadorAtual == Color.White) ? Color.Black : Color.White;
 		}
 }
