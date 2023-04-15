@@ -52,6 +52,9 @@ public class UI {
 		System.out.println();
 		System.out.println("Turno: " + partidaDeXadrez.getTurno());
 		System.out.println("Esperando jogador: " + partidaDeXadrez.getJogadorAtual());
+		if (partidaDeXadrez.getCheck()) {
+			System.out.println("Você está em CHECK!");
+		}
 	}
 	
 	public static void printBoard(ChessPiece[][] pieces,boolean [][] possiveisMovimentos) {

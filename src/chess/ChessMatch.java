@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import boardgame.Board;
 import boardgame.Piece;
@@ -14,6 +15,7 @@ public class ChessMatch {
 		private int turno;
 		private Color jogadorAtual;
 		private Board board;
+		private boolean check;
 		
 		private List<Piece> peçasNoTabuleiro = new ArrayList<>();
 		private List<Piece> peçascapturadas = new ArrayList<>();
@@ -32,6 +34,10 @@ public class ChessMatch {
 		
 		public Color getJogadorAtual() {
 			return jogadorAtual;
+		}
+		
+		public boolean getCheck () {
+			return check;
 		}
 		
 		public ChessPiece[][] getPieces() {
@@ -66,6 +72,11 @@ public class ChessMatch {
 			validarPosiçãoDeOrigem(origem);
 			validarPosiçãoDeDestino(origem,destino);
 			Piece peçaCapturada = movimento(origem,destino);
+			if(testeCheck(jogadorAtual)) {
+				desfazerMovimento(origem, destino, peçaCapturada);
+				throw new chessException("Você não pode se colocar em Check");
+			}
+			check = (testeCheck(oponente(jogadorAtual))) ? true : false ;
 			proximoTurno();
 			return (ChessPiece) peçaCapturada;
 		}
@@ -102,6 +113,16 @@ public class ChessMatch {
 			return peçaCapturada;
 		}
 		
+		private void desfazerMovimento(Position origem,Position destino,Piece peçaCapturada) {
+			Piece p = board.removePiece(destino);
+			board.placePiece(p, origem);
+			if(peçaCapturada != null) {
+				board.placePiece(peçaCapturada, destino);
+				peçascapturadas.remove(peçaCapturada);
+				peçasNoTabuleiro.add(peçaCapturada);
+			}
+		}
+		
 		public boolean [][] possiveisMovimentos (ChessPosition posiçãoDeOrigem) {
 			Position position = posiçãoDeOrigem.toPosition() ;
 			validarPosiçãoDeOrigem(position);
@@ -112,5 +133,31 @@ public class ChessMatch {
 		private void proximoTurno () {
 			turno++;
 			jogadorAtual = (jogadorAtual == Color.White) ? Color.Black : Color.White;
+		}
+		
+		private Color oponente(Color cor) {
+			return (cor == Color.White) ? Color.Black :Color.White;
+		}
+		
+		private ChessPiece rei(Color cor) {
+			List<Piece> list = peçasNoTabuleiro.stream().filter(x -> ((ChessPiece)x).getColor() == cor).collect(Collectors.toList());
+			for (Piece p : list) {
+				if(p instanceof King) {
+					return (ChessPiece)p;
+				}
+			}
+			throw new IllegalStateException("Não existe" + cor + "rei no tabuleiro");
+		}
+		
+		private boolean testeCheck(Color cor) {
+			Position posiçãoDoRei = rei(cor).getPosiçãoDoXadrez().toPosition();
+			List<Piece> peçasDoOponente = peçasNoTabuleiro.stream().filter(x -> ((ChessPiece)x).getColor() == oponente(cor)).collect(Collectors.toList());
+			for (Piece p : peçasDoOponente) {
+				boolean[][] mat = p.possiveisMovimentos();
+				if(mat[posiçãoDoRei.getRow()][posiçãoDoRei.getColumn()]) {
+					return true;
+				}
+			}
+			return false;
 		}
 }
