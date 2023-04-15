@@ -7,9 +7,10 @@ import java.util.stream.Collectors;
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
-import chess.pieces.King;
+import chess.pieces.Rei;
+import chess.pieces.Bispo;
 import chess.pieces.Peao;
-import chess.pieces.Rook;
+import chess.pieces.Torre;
 
 public class ChessMatch {
 	
@@ -58,9 +59,11 @@ public class ChessMatch {
 		}
 
 		private void InitialSetup() {
-			  	placeNewPiece('a', 1, new Rook(board, Color.White));
-		        placeNewPiece('e', 1, new King(board, Color.White));
-		        placeNewPiece('h', 1, new Rook(board, Color.White));
+	        	placeNewPiece('e', 1, new Rei(board, Color.White));
+			  	placeNewPiece('c', 1, new Bispo(board, Color.White));
+			  	placeNewPiece('f', 1, new Bispo(board, Color.White));
+			  	placeNewPiece('a', 1, new Torre(board, Color.White));
+		        placeNewPiece('h', 1, new Torre(board, Color.White));
 		        placeNewPiece('a', 2, new Peao(board, Color.White));
 		        placeNewPiece('b', 2, new Peao(board, Color.White));
 		        placeNewPiece('c', 2, new Peao(board, Color.White));
@@ -70,9 +73,11 @@ public class ChessMatch {
 		        placeNewPiece('g', 2, new Peao(board, Color.White));
 		        placeNewPiece('h', 2, new Peao(board, Color.White));
 			//-------------------------------------------------------------------
-		        placeNewPiece('a', 8, new Rook(board, Color.Black));
-		        placeNewPiece('e', 8, new King(board, Color.Black));
-		        placeNewPiece('h', 8, new Rook(board, Color.Black));
+		        placeNewPiece('e', 8, new Rei(board, Color.Black));
+		        placeNewPiece('c', 8, new Bispo(board, Color.Black));
+		        placeNewPiece('f', 8, new Bispo(board, Color.Black));
+		        placeNewPiece('a', 8, new Torre(board, Color.Black));
+		        placeNewPiece('h', 8, new Torre(board, Color.Black));
 		        placeNewPiece('a', 7, new Peao(board, Color.Black));
 		        placeNewPiece('b', 7, new Peao(board, Color.Black));
 		        placeNewPiece('c', 7, new Peao(board, Color.Black));
@@ -173,7 +178,7 @@ public class ChessMatch {
 		private ChessPiece rei(Color cor) {
 			List<Piece> list = peçasNoTabuleiro.stream().filter(x -> ((ChessPiece)x).getColor() == cor).collect(Collectors.toList());
 			for (Piece p : list) {
-				if(p instanceof King) {
+				if(p instanceof Rei) {
 					return (ChessPiece)p;
 				}
 			}

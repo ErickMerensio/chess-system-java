@@ -59,7 +59,7 @@ public class UI {
 		} else {
 			System.out.println("CHECKMATE");
 			System.out.println("Ganhador: " + partidaDeXadrez.getJogadorAtual());
-		}
+		} 
 	}
 	
 	public static void printBoard(ChessPiece[][] pieces,boolean [][] possiveisMovimentos) {
