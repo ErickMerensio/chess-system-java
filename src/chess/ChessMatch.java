@@ -61,7 +61,7 @@ public class ChessMatch {
 		}
 
 		private void InitialSetup() {
-	        	placeNewPiece('e', 1, new Rei(board, Color.White));
+	        	placeNewPiece('e', 1, new Rei(board, Color.White,this));
 	        	placeNewPiece('d', 1, new Rainha(board, Color.White));
 			  	placeNewPiece('c', 1, new Bispo(board, Color.White));
 			  	placeNewPiece('f', 1, new Bispo(board, Color.White));
@@ -78,7 +78,7 @@ public class ChessMatch {
 		        placeNewPiece('g', 2, new Peao(board, Color.White));
 		        placeNewPiece('h', 2, new Peao(board, Color.White));
 			//-------------------------------------------------------------------
-		        placeNewPiece('e', 8, new Rei(board, Color.Black));
+		        placeNewPiece('e', 8, new Rei(board, Color.Black,this));
 		        placeNewPiece('d', 8, new Rainha(board, Color.Black));
 		        placeNewPiece('c', 8, new Bispo(board, Color.Black));
 		        placeNewPiece('f', 8, new Bispo(board, Color.Black));
@@ -152,7 +152,22 @@ public class ChessMatch {
 			if (peçaCapturada != null) {peçasNoTabuleiro.remove(peçaCapturada);
 			peçascapturadas.add(peçaCapturada);
 			}
-			
+			// roque da torre menor
+			if (p instanceof Rei && destino.getColumn() == origem.getColumn() +2) {
+				Position origemDaTorre = new Position (origem.getRow(),origem.getColumn() +3);
+				Position destinoDaTorre = new Position (origem.getRow(),origem.getColumn() +1);
+				ChessPiece Torre = (ChessPiece)board.removePiece(origemDaTorre);
+				board.placePiece(Torre, destinoDaTorre);
+				Torre.aumentarContadorDeMovimento();
+			}
+			// roque da torre maior
+			if (p instanceof Rei && destino.getColumn() == origem.getColumn() -2) {
+				Position origemDaTorre = new Position (origem.getRow(),origem.getColumn() -4);
+				Position destinoDaTorre = new Position (origem.getRow(),origem.getColumn() -1);
+				ChessPiece Torre = (ChessPiece)board.removePiece(origemDaTorre);
+				board.placePiece(Torre, destinoDaTorre);
+				Torre.aumentarContadorDeMovimento();
+		}
 			return peçaCapturada;
 		}
 		
@@ -164,6 +179,22 @@ public class ChessMatch {
 				board.placePiece(peçaCapturada, destino);
 				peçascapturadas.remove(peçaCapturada);
 				peçasNoTabuleiro.add(peçaCapturada);
+			}
+			// roque da torre menor
+						if (p instanceof Rei && destino.getColumn() == origem.getColumn() +2) {
+							Position origemDaTorre = new Position (origem.getRow(),origem.getColumn() +3);
+							Position destinoDaTorre = new Position (origem.getRow(),origem.getColumn() +1);
+							ChessPiece Torre = (ChessPiece)board.removePiece(destinoDaTorre);
+							board.placePiece(Torre, origemDaTorre);
+							Torre.diminuirContadorDeMovimento();
+						}
+						// roque da torre maior
+						if (p instanceof Rei && destino.getColumn() == origem.getColumn() -2) {
+							Position origemDaTorre = new Position (origem.getRow(),origem.getColumn() -4);
+							Position destinoDaTorre = new Position (origem.getRow(),origem.getColumn() -1);
+							ChessPiece Torre = (ChessPiece)board.removePiece(destinoDaTorre);
+							board.placePiece(Torre, origemDaTorre);
+							Torre.diminuirContadorDeMovimento();
 			}
 		}
 		
